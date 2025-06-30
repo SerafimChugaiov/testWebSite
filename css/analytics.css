@@ -492,20 +492,18 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Color scheme for numbers */
 .positive-number {
-    color: #059669;
     background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(5, 150, 105, 0.02) 100%);
     padding: 4px 8px;
     border-radius: 6px;
-    border-left: 3px solid #059669;
     font-weight: 600;
 }
 
 .negative-number {
-    color: #DC2626;
+    /*color: #DC2626;*/
     background: linear-gradient(135deg, rgba(220, 38, 38, 0.08) 0%, rgba(220, 38, 38, 0.02) 100%);
     padding: 4px 8px;
     border-radius: 6px;
-    border-left: 3px solid #DC2626;
+    /*border-left: 3px solid #DC2626;*/
     font-weight: 600;
 }
 
