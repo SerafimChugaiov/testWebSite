@@ -1,0 +1,205 @@
+/* Общие стили */
+body {
+    display: flex;
+    font-family: 'Arial', sans-serif;
+    background-color: #F8F9FA;
+    color: #343A40;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #343A40;
+}
+
+
+
+/* Боковая панель */
+.sidebar {
+    width: 240px;
+    background: #2C3E50;
+    height: 100vh;
+    position: fixed;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar h4 {
+    color: #E4B400;
+    font-size: 1.2rem;
+}
+
+.sidebar .nav-link {
+    color: #ECF0F1;
+    font-weight: 500;
+    margin: 12px 0;
+    padding: 12px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.sidebar .nav-link:hover {
+    background: #E4B400;
+    color: #2C3E50;
+}
+
+.sidebar .nav-link.active {
+    background: #E4B400;
+    color: #2C3E50;
+    font-weight: bold;
+}
+
+/* Общие стили */
+body {
+    display: flex;
+    font-family: 'Arial', sans-serif;
+    background-color: #F4F6F9;
+    color: #343A40;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #2C3E50;
+}
+
+/* Основной контент */
+.content {
+    margin-left: 260px;
+    padding: 25px;
+    flex-grow: 1;
+    background-color: #F8F9FA;
+}
+
+.optional-container {
+    background: #FFFFFF;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #DEE2E6;
+}
+
+label, p {
+    color: #495057;
+    font-size: 1rem;
+}
+
+.form-select, .form-control {
+    background: #FFFFFF;
+    color: #343A40;
+    border: 1px solid #CED4DA;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: #80BDFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+textarea.form-control {
+    resize: none;
+}
+
+.btn-primary {
+    background-color: #1A73E8;
+    border-color: #1A73E8;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1665C0;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background-color: #28A745;
+    border-color: #28A745;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+#parseButton {
+    display: block;
+    margin: 20px auto;
+}
+
+/* Таблица */
+#transactionsTable {
+    background: #FFFFFF;
+    color: #343A40;
+    border: 1px solid #DEE2E6;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#transactionsTable th {
+    background: #F8F9FA;
+    color: #495057;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 2px solid #DEE2E6;
+    padding: 12px;
+    text-transform: uppercase;
+}
+
+#transactionsTable td {
+    background: #FFFFFF;
+    color: #495057;
+    text-align: center;
+    border-top: 1px solid #DEE2E6;
+    padding: 12px;
+}
+
+#transactionsTable tbody tr:hover {
+    background: #E9F5FF;
+}
+
+/* Сообщение об успешном сохранении */
+#successMessage {
+    font-size: 1rem;
+    color: #28A745;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+    display: none;
+}
+
+/* Кнопка "Сохранить в базу данных" */
+#saveButton {
+    background-color: #17A2B8;
+    border-color: #17A2B8;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 8px;
+    display: block;
+    margin: 20px auto;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#saveButton:hover {
+    background-color: #138496;
+    transform: translateY(-2px);
+}

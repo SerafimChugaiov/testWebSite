@@ -1,0 +1,171 @@
+/* Общие стили */
+body {
+    display: flex;
+    font-family: 'Arial', sans-serif;
+    background-color: #F8F9FA;
+    color: #343A40;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #343A40;
+}
+
+
+
+/* Боковая панель */
+.sidebar {
+    width: 240px;
+    background: #2C3E50;
+    height: 100vh;
+    position: fixed;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar h4 {
+    color: #E4B400;
+    font-size: 1.2rem;
+}
+
+.sidebar .nav-link {
+    color: #ECF0F1;
+    font-weight: 500;
+    margin: 12px 0;
+    padding: 12px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.sidebar .nav-link:hover {
+    background: #E4B400;
+    color: #2C3E50;
+}
+
+.sidebar .nav-link.active {
+    background: #E4B400;
+    color: #2C3E50;
+    font-weight: bold;
+}
+
+/* Основной контент */
+.content {
+    margin-left: 260px;
+    padding: 25px;
+    flex-grow: 1;
+    background-color: #F8F9FA;
+}
+
+.transaction-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.transaction-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-card h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2C3E50;
+}
+
+.transaction-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.transaction-card form input,
+.transaction-card form select,
+.transaction-card form textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.transaction-card form button {
+    background-color: #D4AF37;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#message,
+#message-debit,
+#message-credit,
+#message-transfer,
+#message-exchange{
+    margin-top: 15px;
+    font-weight: bold;
+    color: green;
+}
+
+.loading {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Стили для вкладок */
+.transaction-container .nav-tabs {
+    border-bottom: 2px solid #ddd; /* Тонкая линия снизу для отделения табов */
+    margin-bottom: 15px; /* Отступ снизу */
+}
+
+/* Стили для элементов nav-item */
+.transaction-container .nav-item {
+    margin-right: 5px; /* Отступ между табами */
+}
+
+/* Стили для ссылок в табах (a.nav-link) */
+.transaction-container .nav-link {
+    border-radius: 5px 5px 0 0; /* Закругленные углы сверху */
+    padding: 10px 20px; /* Отступы внутри таба */
+    color: #F5F5F7; /* Белый цвет текста для общего контекста */
+    background-color: #2C3E50; /* Темный фон, согласующийся с боковой панелью */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход */
+    font-weight: bold; /* Жирный текст для выделения */
+}
+
+/* При наведении на ссылку (активный стиль) */
+.transaction-container .nav-link:hover {
+    background-color: #B8860B; /* Золотистый фон при наведении */
+    color: white; /* Белый текст при наведении */
+    font-weight: bold; /* Жирный текст для выделения */
+
+}
+
+/* Стили для активного таба */
+.transaction-container .nav-link.active {
+    color: #2C3E50; /* Белый цвет для активной вкладки */
+    background-color: #D4AF37; /* Золотистый фон для активной вкладки */
+    border: 2px solid #D4AF37; /* Золотой бордер для активной вкладки */
+    font-weight: bold; /* Жирный текст для выделения */
+}
+
+/* Стили для подсвечивания таба, если на него кликнули */
+.transaction-container .nav-tabs .nav-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25); /* Золотистый контур при фокусировке */
+}
