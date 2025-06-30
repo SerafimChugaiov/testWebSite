@@ -221,51 +221,78 @@ function loadAnalytics(tabType, filterType, customStartDate = null, customEndDat
 
 // Send request to server
 function sendRequest(tabType, startDate, endDate) {
-    // Define endpoint URL
-    let endpoint = '';
-    switch(tabType) {
-        case 'vendors':
-            endpoint = '/api/v1/statistic/vendor';
-            break;
-        case 'projects':
-            endpoint = '/api/v1/statistic/project';
-            break;
-        case 'clients':
-            endpoint = '/api/v1/statistic/client';
-            break;
-    }
+    console.log(`Loading test data for ${tabType} from ${startDate} to ${endDate}`);
 
-    // Encode parameters for URL
-    const encodedStartDate = encodeURIComponent(startDate);
-    const encodedEndDate = encodeURIComponent(endDate);
-
-    const url = `${baseUrl}${endpoint}?fromDate=${encodedStartDate}&toDate=${encodedEndDate}`;
-
-    console.log(`Requesting: ${url}`);
-
-    // Send GET request
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${apiToken}`,
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+    // ВСТАВЬТЕ ВАШИ ТЕСТОВЫЕ ДАННЫЕ ЗДЕСЬ
+    const testData = {
+        vendors: {
+            data: {
+                vendorItems: [
+                    // Добавьте сюда ваши тестовые данные для vendors
+                    {
+                        vendorName: "Test Vendor 1",
+                        vendorType: "External",
+                        credit: 10000,
+                        debitAsAssociated: 2000,
+                        debitToVendor: 7000,
+                        totalDebit: 9000,
+                        profitAmount: 1000,
+                        profitPercentage: 10
+                    }
+                    // ... больше тестовых записей
+                ]
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log(`Received data for ${tabType}:`, data);
+        },
+        projects: {
+            data: {
+                projectItems: [
+                    // Добавьте сюда ваши тестовые данные для projects
+                    {
+                        projectName: "Test Project 1",
+                        projectCategory: "Development",
+                        credit: 15000,
+                        debitToExternalVendors: 8000,
+                        debitToInternalVendors: 3000,
+                        totalDebit: 11000,
+                        profitAmount: 4000,
+                        profitPercentage: 26.67
+                    }
+                    // ... больше тестовых записей
+                ]
+            }
+        },
+        clients: {
+            data: {
+                clientItems: [
+                    // Добавьте сюда ваши тестовые данные для clients
+                    {
+                        clientName: "Test Client 1",
+                        clientType: "Corporate",
+                        credit: 20000,
+                        debitToExternalVendors: 10000,
+                        debitToInternalVendors: 5000,
+                        totalDebit: 15000,
+                        profitAmount: 5000,
+                        profitPercentage: 25
+                    }
+                    // ... больше тестовых записей
+                ]
+            }
+        }
+    };
+
+    // Симуляция задержки сети
+    setTimeout(() => {
+        const data = testData[tabType];
+        if (data) {
+            console.log(`Received test data for ${tabType}:`, data);
             renderTable(tabType, data);
-        })
-        .catch(error => {
-            console.error(`Error loading ${tabType} analytics:`, error);
-            showError(tabType, error.message);
-        });
+        } else {
+            showError(tabType, `No test data found for ${tabType}`);
+        }
+    }, 500); // 500ms задержка для имитации сетевого запроса
 }
+
 
 // Show loading indicator
 function showLoading(tabType) {
