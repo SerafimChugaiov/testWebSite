@@ -899,9 +899,9 @@ function showEmptyState(tabType) {
 
 // Format numbers for display
 function formatNumber(value) {
-    if (value === 0) return { class: 'zero-number', text: '0.00' };
-    if (value > 0) return { class: 'positive-number', text: '+' + value.toFixed(2) };
-    if (value < 0) return { class: 'negative-number', text: value.toFixed(2) };
+    // if (value === 0) return { class: 'zero-number', text: '0.00' };
+    // if (value > 0) return { class: 'positive-number', text: '+' + value.toFixed(2) };
+    // if (value < 0) return { class: 'negative-number', text: value.toFixed(2) };
     return { class: '', text: value.toString() };
 }
 
