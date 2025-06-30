@@ -1,175 +1,3 @@
-// Demo test data
-const DEMO_DATA = {
-    vendors: {
-        data: {
-            vendorItems: [
-                {
-                    vendorName: "TechCorp Solutions",
-                    vendorType: "External",
-                    credit: 125000.50,
-                    debitAsAssociated: 15000.00,
-                    debitToVendor: 95000.25,
-                    totalDebit: 110000.25,
-                    profitAmount: 15000.25,
-                    profitPercentage: 12.5
-                },
-                {
-                    vendorName: "Digital Dynamics",
-                    vendorType: "Internal",
-                    credit: 85000.00,
-                    debitAsAssociated: 8500.00,
-                    debitToVendor: 65000.00,
-                    totalDebit: 73500.00,
-                    profitAmount: 11500.00,
-                    profitPercentage: 15.6
-                },
-                {
-                    vendorName: "Creative Agency Pro",
-                    vendorType: "External",
-                    credit: 45000.75,
-                    debitAsAssociated: 5000.00,
-                    debitToVendor: 35000.50,
-                    totalDebit: 40000.50,
-                    profitAmount: 5000.25,
-                    profitPercentage: 11.1
-                },
-                {
-                    vendorName: "InnovateIT",
-                    vendorType: "Internal",
-                    credit: 92000.00,
-                    debitAsAssociated: 12000.00,
-                    debitToVendor: 68000.00,
-                    totalDebit: 80000.00,
-                    profitAmount: 12000.00,
-                    profitPercentage: 13.0
-                },
-                {
-                    vendorName: "MarketMaster",
-                    vendorType: "External",
-                    credit: 67500.25,
-                    debitAsAssociated: 7500.00,
-                    debitToVendor: 52000.00,
-                    totalDebit: 59500.00,
-                    profitAmount: 8000.25,
-                    profitPercentage: 11.9
-                }
-            ]
-        }
-    },
-    projects: {
-        data: {
-            projectItems: [
-                {
-                    projectName: "E-commerce Platform",
-                    projectCategory: "Web Development",
-                    credit: 180000.00,
-                    debitToExternalVendors: 95000.00,
-                    debitToInternalVendors: 45000.00,
-                    totalDebit: 140000.00,
-                    profitAmount: 40000.00,
-                    profitPercentage: 22.2
-                },
-                {
-                    projectName: "Mobile Banking App",
-                    projectCategory: "Mobile Development",
-                    credit: 250000.50,
-                    debitToExternalVendors: 125000.00,
-                    debitToInternalVendors: 75000.25,
-                    totalDebit: 200000.25,
-                    profitAmount: 50000.25,
-                    profitPercentage: 20.0
-                },
-                {
-                    projectName: "CRM System",
-                    projectCategory: "Enterprise Software",
-                    credit: 120000.00,
-                    debitToExternalVendors: 65000.00,
-                    debitToInternalVendors: 35000.00,
-                    totalDebit: 100000.00,
-                    profitAmount: 20000.00,
-                    profitPercentage: 16.7
-                },
-                {
-                    projectName: "Marketing Campaign",
-                    projectCategory: "Digital Marketing",
-                    credit: 75000.75,
-                    debitToExternalVendors: 45000.00,
-                    debitToInternalVendors: 15000.00,
-                    totalDebit: 60000.00,
-                    profitAmount: 15000.75,
-                    profitPercentage: 20.0
-                },
-                {
-                    projectName: "Data Analytics Platform",
-                    projectCategory: "Data Science",
-                    credit: 195000.00,
-                    debitToExternalVendors: 110000.00,
-                    debitToInternalVendors: 55000.00,
-                    totalDebit: 165000.00,
-                    profitAmount: 30000.00,
-                    profitPercentage: 15.4
-                }
-            ]
-        }
-    },
-    clients: {
-        data: {
-            clientItems: [
-                {
-                    clientName: "GlobalTech Industries",
-                    clientType: "Enterprise",
-                    credit: 320000.00,
-                    debitToExternalVendors: 180000.00,
-                    debitToInternalVendors: 95000.00,
-                    totalDebit: 275000.00,
-                    profitAmount: 45000.00,
-                    profitPercentage: 14.1
-                },
-                {
-                    clientName: "StartupXYZ",
-                    clientType: "Startup",
-                    credit: 85000.50,
-                    debitToExternalVendors: 45000.00,
-                    debitToInternalVendors: 25000.00,
-                    totalDebit: 70000.00,
-                    profitAmount: 15000.50,
-                    profitPercentage: 18.2
-                },
-                {
-                    clientName: "RetailChain Plus",
-                    clientType: "Retail",
-                    credit: 150000.25,
-                    debitToExternalVendors: 85000.00,
-                    debitToInternalVendors: 40000.00,
-                    totalDebit: 125000.00,
-                    profitAmount: 25000.25,
-                    profitPercentage: 16.7
-                },
-                {
-                    clientName: "FinanceCorpABC",
-                    clientType: "Financial",
-                    credit: 280000.75,
-                    debitToExternalVendors: 165000.00,
-                    debitToInternalVendors: 75000.00,
-                    totalDebit: 240000.00,
-                    profitAmount: 40000.75,
-                    profitPercentage: 14.3
-                },
-                {
-                    clientName: "HealthcarePlus",
-                    clientType: "Healthcare",
-                    credit: 190000.00,
-                    debitToExternalVendors: 105000.00,
-                    debitToInternalVendors: 55000.00,
-                    totalDebit: 160000.00,
-                    profitAmount: 30000.00,
-                    profitPercentage: 15.8
-                }
-            ]
-        }
-    }
-};
-
 // Switch between tabs
 document.addEventListener('DOMContentLoaded', function() {
     const tabButtons = document.querySelectorAll('.tab-button');
@@ -369,7 +197,7 @@ function calculateDates(filterType) {
     };
 }
 
-// Main function to load analytics (modified for demo)
+// Main function to load analyticss
 function loadAnalytics(tabType, filterType, customStartDate = null, customEndDate = null) {
     let startDate, endDate;
 
@@ -387,22 +215,56 @@ function loadAnalytics(tabType, filterType, customStartDate = null, customEndDat
     // Show loading indicator
     showLoading(tabType);
 
-    // Simulate API delay and load demo data
-    setTimeout(() => {
-        const demoData = DEMO_DATA[tabType];
-        if (demoData) {
-            console.log(`Demo data loaded for ${tabType}:`, demoData);
-            renderTable(tabType, demoData);
-        } else {
-            showError(tabType, 'Demo data not found');
-        }
-    }, 800); // 800ms delay to simulate API call
+    // Send request to server
+    sendRequest(tabType, startDate, endDate);
 }
 
-// Send request to server (disabled for demo)
+// Send request to server
 function sendRequest(tabType, startDate, endDate) {
-    // This function is disabled in demo mode
-    console.log('Demo mode: API requests are disabled');
+    // Define endpoint URL
+    let endpoint = '';
+    switch(tabType) {
+        case 'vendors':
+            endpoint = '/api/v1/statistic/vendor';
+            break;
+        case 'projects':
+            endpoint = '/api/v1/statistic/project';
+            break;
+        case 'clients':
+            endpoint = '/api/v1/statistic/client';
+            break;
+    }
+
+    // Encode parameters for URL
+    const encodedStartDate = encodeURIComponent(startDate);
+    const encodedEndDate = encodeURIComponent(endDate);
+
+    const url = `${baseUrl}${endpoint}?fromDate=${encodedStartDate}&toDate=${encodedEndDate}`;
+
+    console.log(`Requesting: ${url}`);
+
+    // Send GET request
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${apiToken}`,
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(`Received data for ${tabType}:`, data);
+            renderTable(tabType, data);
+        })
+        .catch(error => {
+            console.error(`Error loading ${tabType} analytics:`, error);
+            showError(tabType, error.message);
+        });
 }
 
 // Show loading indicator
@@ -411,7 +273,7 @@ function showLoading(tabType) {
     if (container) {
         container.innerHTML = `
             <div class="loading">
-                <i class="fa fa-spinner fa-spin"></i><br>
+                <i class="fa fa-spinner"></i><br>
                 Loading ${tabType} analytics...
             </div>
         `;
