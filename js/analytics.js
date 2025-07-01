@@ -27,6 +27,312 @@ document.addEventListener('DOMContentLoaded', function() {
     loadAnalytics('vendors', 'current-month');
 });
 
+// Global variables to store current data and sorting state
+let currentData = {
+    vendors: null,
+    projects: null,
+    clients: null
+};
+
+let sortState = {
+    vendors: { column: null, direction: 'asc' },
+    projects: { column: null, direction: 'asc' },
+    clients: { column: null, direction: 'asc' }
+};
+
+// Тестовые данные для демо
+// Тестовые данные для демо
+const DEMO_DATA = {
+    vendors: {
+        data: {
+            vendorItems: [
+                {
+                    vendorName: "Tech Solutions Ltd",
+                    vendorType: "External",
+                    credit: 125000,
+                    debitAsAssociated: 15000,
+                    debitToVendor: 85000,
+                    totalDebit: 100000,
+                    profitAmount: 25000,
+                    profitPercentage: 20.0
+                },
+                {
+                    vendorName: "Digital Services Inc",
+                    vendorType: "Internal",
+                    credit: 95000,
+                    debitAsAssociated: 12000,
+                    debitToVendor: 62000,
+                    totalDebit: 74000,
+                    profitAmount: 21000,
+                    profitPercentage: 22.11
+                },
+                {
+                    vendorName: "Creative Studio Pro",
+                    vendorType: "External",
+                    credit: 78000,
+                    debitAsAssociated: 8500,
+                    debitToVendor: 52000,
+                    totalDebit: 60500,
+                    profitAmount: 17500,
+                    profitPercentage: 22.44
+                },
+                {
+                    vendorName: "DataFlow Systems",
+                    vendorType: "Internal",
+                    credit: 156000,
+                    debitAsAssociated: 18000,
+                    debitToVendor: 98000,
+                    totalDebit: 116000,
+                    profitAmount: 40000,
+                    profitPercentage: 25.64
+                },
+                {
+                    vendorName: "Marketing Hub Agency",
+                    vendorType: "External",
+                    credit: 67000,
+                    debitAsAssociated: 7200,
+                    debitToVendor: 43000,
+                    totalDebit: 50200,
+                    profitAmount: 16800,
+                    profitPercentage: 25.07
+                },
+                {
+                    vendorName: "Security Systems Co",
+                    vendorType: "Internal",
+                    credit: 89000,
+                    debitAsAssociated: 9800,
+                    debitToVendor: 58000,
+                    totalDebit: 67800,
+                    profitAmount: 21200,
+                    profitPercentage: 23.82
+                },
+                {
+                    vendorName: "Cloud Infrastructure Ltd",
+                    vendorType: "External",
+                    credit: 234000,
+                    debitAsAssociated: 28000,
+                    debitToVendor: 165000,
+                    totalDebit: 193000,
+                    profitAmount: 41000,
+                    profitPercentage: 17.52
+                },
+                {
+                    vendorName: "Mobile Dev Studio",
+                    vendorType: "Internal",
+                    credit: 112000,
+                    debitAsAssociated: 14500,
+                    debitToVendor: 72000,
+                    totalDebit: 86500,
+                    profitAmount: 25500,
+                    profitPercentage: 22.77
+                }
+            ]
+        }
+    },
+    projects: {
+        data: {
+            projectItems: [
+                {
+                    projectName: "E-commerce Platform Rebuild",
+                    projectCategory: "Web Development",
+                    credit: 185000,
+                    debitToExternalVendors: 65000,
+                    debitToInternalVendors: 45000,
+                    totalDebit: 110000,
+                    profitAmount: 75000,
+                    profitPercentage: 40.54
+                },
+                {
+                    projectName: "Mobile Banking App",
+                    projectCategory: "Mobile Development",
+                    credit: 275000,
+                    debitToExternalVendors: 85000,
+                    debitToInternalVendors: 95000,
+                    totalDebit: 180000,
+                    profitAmount: 95000,
+                    profitPercentage: 34.55
+                },
+                {
+                    projectName: "Data Analytics Dashboard",
+                    projectCategory: "Analytics",
+                    credit: 145000,
+                    debitToExternalVendors: 42000,
+                    debitToInternalVendors: 58000,
+                    totalDebit: 100000,
+                    profitAmount: 45000,
+                    profitPercentage: 31.03
+                },
+                {
+                    projectName: "Corporate Website Redesign",
+                    projectCategory: "Web Development",
+                    credit: 95000,
+                    debitToExternalVendors: 28000,
+                    debitToInternalVendors: 35000,
+                    totalDebit: 63000,
+                    profitAmount: 32000,
+                    profitPercentage: 33.68
+                },
+                {
+                    projectName: "CRM System Integration",
+                    projectCategory: "System Integration",
+                    credit: 320000,
+                    debitToExternalVendors: 125000,
+                    debitToInternalVendors: 85000,
+                    totalDebit: 210000,
+                    profitAmount: 110000,
+                    profitPercentage: 34.38
+                },
+                {
+                    projectName: "Marketing Automation Tool",
+                    projectCategory: "Marketing Technology",
+                    credit: 125000,
+                    debitToExternalVendors: 45000,
+                    debitToInternalVendors: 42000,
+                    totalDebit: 87000,
+                    profitAmount: 38000,
+                    profitPercentage: 30.4
+                },
+                {
+                    projectName: "Cloud Migration Project",
+                    projectCategory: "Cloud Services",
+                    credit: 425000,
+                    debitToExternalVendors: 185000,
+                    debitToInternalVendors: 95000,
+                    totalDebit: 280000,
+                    profitAmount: 145000,
+                    profitPercentage: 34.12
+                },
+                {
+                    projectName: "AI Chatbot Development",
+                    projectCategory: "AI/ML",
+                    credit: 165000,
+                    debitToExternalVendors: 58000,
+                    debitToInternalVendors: 62000,
+                    totalDebit: 120000,
+                    profitAmount: 45000,
+                    profitPercentage: 27.27
+                },
+                {
+                    projectName: "Security Audit & Compliance",
+                    projectCategory: "Security",
+                    credit: 85000,
+                    debitToExternalVendors: 32000,
+                    debitToInternalVendors: 28000,
+                    totalDebit: 60000,
+                    profitAmount: 25000,
+                    profitPercentage: 29.41
+                }
+            ]
+        }
+    },
+    clients: {
+        data: {
+            clientItems: [
+                {
+                    clientName: "Global Tech Corporation",
+                    clientType: "Enterprise",
+                    credit: 485000,
+                    debitToExternalVendors: 165000,
+                    debitToInternalVendors: 125000,
+                    totalDebit: 290000,
+                    profitAmount: 195000,
+                    profitPercentage: 40.21
+                },
+                {
+                    clientName: "RetailMax Inc",
+                    clientType: "Mid-Market",
+                    credit: 285000,
+                    debitToExternalVendors: 95000,
+                    debitToInternalVendors: 85000,
+                    totalDebit: 180000,
+                    profitAmount: 105000,
+                    profitPercentage: 36.84
+                },
+                {
+                    clientName: "FinanceFlow Solutions",
+                    clientType: "Enterprise",
+                    credit: 625000,
+                    debitToExternalVendors: 225000,
+                    debitToInternalVendors: 165000,
+                    totalDebit: 390000,
+                    profitAmount: 235000,
+                    profitPercentage: 37.6
+                },
+                {
+                    clientName: "StartupHub Ventures",
+                    clientType: "Small Business",
+                    credit: 125000,
+                    debitToExternalVendors: 45000,
+                    debitToInternalVendors: 38000,
+                    totalDebit: 83000,
+                    profitAmount: 42000,
+                    profitPercentage: 33.6
+                },
+                {
+                    clientName: "HealthTech Innovations",
+                    clientType: "Mid-Market",
+                    credit: 345000,
+                    debitToExternalVendors: 125000,
+                    debitToInternalVendors: 95000,
+                    totalDebit: 220000,
+                    profitAmount: 125000,
+                    profitPercentage: 36.23
+                },
+                {
+                    clientName: "EduSoft Academy",
+                    clientType: "Small Business",
+                    credit: 165000,
+                    debitToExternalVendors: 58000,
+                    debitToInternalVendors: 52000,
+                    totalDebit: 110000,
+                    profitAmount: 55000,
+                    profitPercentage: 33.33
+                },
+                {
+                    clientName: "Manufacturing Elite Ltd",
+                    clientType: "Enterprise",
+                    credit: 785000,
+                    debitToExternalVendors: 285000,
+                    debitToInternalVendors: 195000,
+                    totalDebit: 480000,
+                    profitAmount: 305000,
+                    profitPercentage: 38.85
+                },
+                {
+                    clientName: "Digital Marketing Pro",
+                    clientType: "Mid-Market",
+                    credit: 225000,
+                    debitToExternalVendors: 82000,
+                    debitToInternalVendors: 68000,
+                    totalDebit: 150000,
+                    profitAmount: 75000,
+                    profitPercentage: 33.33
+                },
+                {
+                    clientName: "Green Energy Systems",
+                    clientType: "Enterprise",
+                    credit: 545000,
+                    debitToExternalVendors: 195000,
+                    debitToInternalVendors: 145000,
+                    totalDebit: 340000,
+                    profitAmount: 205000,
+                    profitPercentage: 37.61
+                },
+                {
+                    clientName: "LocalBiz Solutions",
+                    clientType: "Small Business",
+                    credit: 95000,
+                    debitToExternalVendors: 35000,
+                    debitToInternalVendors: 28000,
+                    totalDebit: 63000,
+                    profitAmount: 32000,
+                    profitPercentage: 33.68
+                }
+            ]
+        }
+    }
+};
+
 // Function to apply active filter to selected tab
 function applyActiveFilterToTab(tabType) {
     // Find active filter button for current tab
@@ -109,7 +415,7 @@ function handleFilterSelection(tabType, filterType) {
     }
 
     if (currentPeriod) {
-        currentPeriod.textContent = `analytics for: ${periodText}`;
+        currentPeriod.textContent = `Analytics for: ${periodText}`;
     }
 }
 
@@ -130,7 +436,7 @@ function applyCustomPeriod(tabType) {
 
     const currentPeriod = document.getElementById(`current-period-${tabType}`);
     if (currentPeriod) {
-        currentPeriod.textContent = `analytic for: ${dateFrom} to ${dateTo}`;
+        currentPeriod.textContent = `Analytic for: ${dateFrom} to ${dateTo}`;
     }
 
     // Convert dates to needed format and load analytics
@@ -197,7 +503,7 @@ function calculateDates(filterType) {
     };
 }
 
-// Main function to load analyticss
+// Main function to load analytics
 function loadAnalytics(tabType, filterType, customStartDate = null, customEndDate = null) {
     let startDate, endDate;
 
@@ -215,648 +521,31 @@ function loadAnalytics(tabType, filterType, customStartDate = null, customEndDat
     // Show loading indicator
     showLoading(tabType);
 
+    // Reset sort state when loading new data
+    sortState[tabType] = { column: null, direction: 'asc' };
+
     // Send request to server
     sendRequest(tabType, startDate, endDate);
 }
 
 // Send request to server
+// Send request to server (DEMO VERSION)
 function sendRequest(tabType, startDate, endDate) {
-    console.log(`Loading test data for ${tabType} from ${startDate} to ${endDate}`);
+    console.log(`Demo mode: Loading ${tabType} analytics from ${startDate} to ${endDate}`);
 
-    // ВСТАВЬТЕ ВАШИ ТЕСТОВЫЕ ДАННЫЕ ЗДЕСЬ
-    const testData = {
-        vendors: {
-            data: {
-                vendorItems: [
-                    {
-                        vendorName: "Tech Solutions Inc",
-                        vendorType: "External",
-                        credit: 125000,
-                        debitAsAssociated: 15000,
-                        debitToVendor: 95000,
-                        totalDebit: 110000,
-                        profitAmount: 15000,
-                        profitPercentage: 12
-                    },
-                    {
-                        vendorName: "Global Development Co",
-                        vendorType: "Internal",
-                        credit: 85000,
-                        debitAsAssociated: 8000,
-                        debitToVendor: 68000,
-                        totalDebit: 76000,
-                        profitAmount: 9000,
-                        profitPercentage: 10.59
-                    },
-                    {
-                        vendorName: "Digital Marketing Hub",
-                        vendorType: "External",
-                        credit: 67000,
-                        debitAsAssociated: 12000,
-                        debitToVendor: 48000,
-                        totalDebit: 60000,
-                        profitAmount: 7000,
-                        profitPercentage: 10.45
-                    },
-                    {
-                        vendorName: "CloudTech Systems",
-                        vendorType: "External",
-                        credit: 145000,
-                        debitAsAssociated: 20000,
-                        debitToVendor: 110000,
-                        totalDebit: 130000,
-                        profitAmount: 15000,
-                        profitPercentage: 10.34
-                    },
-                    {
-                        vendorName: "Innovation Labs",
-                        vendorType: "Internal",
-                        credit: 98000,
-                        debitAsAssociated: 14000,
-                        debitToVendor: 75000,
-                        totalDebit: 89000,
-                        profitAmount: 9000,
-                        profitPercentage: 9.18
-                    },
-                    {
-                        vendorName: "Smart Analytics Ltd",
-                        vendorType: "External",
-                        credit: 78000,
-                        debitAsAssociated: 9000,
-                        debitToVendor: 62000,
-                        totalDebit: 71000,
-                        profitAmount: 7000,
-                        profitPercentage: 8.97
-                    },
-                    {
-                        vendorName: "Web Design Studio",
-                        vendorType: "External",
-                        credit: 45000,
-                        debitAsAssociated: 6000,
-                        debitToVendor: 35000,
-                        totalDebit: 41000,
-                        profitAmount: 4000,
-                        profitPercentage: 8.89
-                    },
-                    {
-                        vendorName: "Data Processing Corp",
-                        vendorType: "Internal",
-                        credit: 112000,
-                        debitAsAssociated: 16000,
-                        debitToVendor: 88000,
-                        totalDebit: 104000,
-                        profitAmount: 8000,
-                        profitPercentage: 7.14
-                    },
-                    {
-                        vendorName: "Mobile App Developers",
-                        vendorType: "External",
-                        credit: 89000,
-                        debitAsAssociated: 11000,
-                        debitToVendor: 72000,
-                        totalDebit: 83000,
-                        profitAmount: 6000,
-                        profitPercentage: 6.74
-                    },
-                    {
-                        vendorName: "AI Research Group",
-                        vendorType: "Internal",
-                        credit: 156000,
-                        debitAsAssociated: 22000,
-                        debitToVendor: 125000,
-                        totalDebit: 147000,
-                        profitAmount: 9000,
-                        profitPercentage: 5.77
-                    },
-                    {
-                        vendorName: "Security Solutions Pro",
-                        vendorType: "External",
-                        credit: 134000,
-                        debitAsAssociated: 18000,
-                        debitToVendor: 108000,
-                        totalDebit: 126000,
-                        profitAmount: 8000,
-                        profitPercentage: 5.97
-                    },
-                    {
-                        vendorName: "Database Management LLC",
-                        vendorType: "Internal",
-                        credit: 76000,
-                        debitAsAssociated: 10000,
-                        debitToVendor: 62000,
-                        totalDebit: 72000,
-                        profitAmount: 4000,
-                        profitPercentage: 5.26
-                    },
-                    {
-                        vendorName: "Network Infrastructure Co",
-                        vendorType: "External",
-                        credit: 198000,
-                        debitAsAssociated: 28000,
-                        debitToVendor: 158000,
-                        totalDebit: 186000,
-                        profitAmount: 12000,
-                        profitPercentage: 6.06
-                    },
-                    {
-                        vendorName: "Quality Assurance Team",
-                        vendorType: "Internal",
-                        credit: 65000,
-                        debitAsAssociated: 8000,
-                        debitToVendor: 53000,
-                        totalDebit: 61000,
-                        profitAmount: 4000,
-                        profitPercentage: 6.15
-                    },
-                    {
-                        vendorName: "Business Intelligence Ltd",
-                        vendorType: "External",
-                        credit: 87000,
-                        debitAsAssociated: 12000,
-                        debitToVendor: 71000,
-                        totalDebit: 83000,
-                        profitAmount: 4000,
-                        profitPercentage: 4.6
-                    },
-                    {
-                        vendorName: "Content Management Systems",
-                        vendorType: "External",
-                        credit: 54000,
-                        debitAsAssociated: 7000,
-                        debitToVendor: 45000,
-                        totalDebit: 52000,
-                        profitAmount: 2000,
-                        profitPercentage: 3.7
-                    },
-                    {
-                        vendorName: "E-commerce Solutions",
-                        vendorType: "Internal",
-                        credit: 103000,
-                        debitAsAssociated: 15000,
-                        debitToVendor: 85000,
-                        totalDebit: 100000,
-                        profitAmount: 3000,
-                        profitPercentage: 2.91
-                    },
-                    {
-                        vendorName: "DevOps Automation",
-                        vendorType: "External",
-                        credit: 92000,
-                        debitAsAssociated: 13000,
-                        debitToVendor: 77000,
-                        totalDebit: 90000,
-                        profitAmount: 2000,
-                        profitPercentage: 2.17
-                    },
-                    {
-                        vendorName: "API Integration Services",
-                        vendorType: "External",
-                        credit: 115000,
-                        debitAsAssociated: 17000,
-                        debitToVendor: 96000,
-                        totalDebit: 113000,
-                        profitAmount: 2000,
-                        profitPercentage: 1.74
-                    },
-                    {
-                        vendorName: "Blockchain Technologies",
-                        vendorType: "Internal",
-                        credit: 167000,
-                        debitAsAssociated: 25000,
-                        debitToVendor: 140000,
-                        totalDebit: 165000,
-                        profitAmount: 2000,
-                        profitPercentage: 1.2
-                    }
-                ]
-            }
-        },
-        projects: {
-            data: {
-                projectItems: [
-                    {
-                        projectName: "Enterprise CRM System",
-                        projectCategory: "Development",
-                        credit: 450000,
-                        debitToExternalVendors: 280000,
-                        debitToInternalVendors: 120000,
-                        totalDebit: 400000,
-                        profitAmount: 50000,
-                        profitPercentage: 11.11
-                    },
-                    {
-                        projectName: "Mobile Banking App",
-                        projectCategory: "Mobile Development",
-                        credit: 380000,
-                        debitToExternalVendors: 220000,
-                        debitToInternalVendors: 130000,
-                        totalDebit: 350000,
-                        profitAmount: 30000,
-                        profitPercentage: 7.89
-                    },
-                    {
-                        projectName: "Data Analytics Platform",
-                        projectCategory: "Analytics",
-                        credit: 520000,
-                        debitToExternalVendors: 340000,
-                        debitToInternalVendors: 145000,
-                        totalDebit: 485000,
-                        profitAmount: 35000,
-                        profitPercentage: 6.73
-                    },
-                    {
-                        projectName: "E-learning Management System",
-                        projectCategory: "Education Technology",
-                        credit: 290000,
-                        debitToExternalVendors: 180000,
-                        debitToInternalVendors: 85000,
-                        totalDebit: 265000,
-                        profitAmount: 25000,
-                        profitPercentage: 8.62
-                    },
-                    {
-                        projectName: "Healthcare Portal",
-                        projectCategory: "Healthcare IT",
-                        credit: 675000,
-                        debitToExternalVendors: 420000,
-                        debitToInternalVendors: 200000,
-                        totalDebit: 620000,
-                        profitAmount: 55000,
-                        profitPercentage: 8.15
-                    },
-                    {
-                        projectName: "Supply Chain Optimization",
-                        projectCategory: "Logistics",
-                        credit: 395000,
-                        debitToExternalVendors: 245000,
-                        debitToInternalVendors: 125000,
-                        totalDebit: 370000,
-                        profitAmount: 25000,
-                        profitPercentage: 6.33
-                    },
-                    {
-                        projectName: "Real Estate Management Platform",
-                        projectCategory: "Property Technology",
-                        credit: 340000,
-                        debitToExternalVendors: 210000,
-                        debitToInternalVendors: 110000,
-                        totalDebit: 320000,
-                        profitAmount: 20000,
-                        profitPercentage: 5.88
-                    },
-                    {
-                        projectName: "IoT Device Management",
-                        projectCategory: "Internet of Things",
-                        credit: 485000,
-                        debitToExternalVendors: 310000,
-                        debitToInternalVendors: 155000,
-                        totalDebit: 465000,
-                        profitAmount: 20000,
-                        profitPercentage: 4.12
-                    },
-                    {
-                        projectName: "Financial Trading Platform",
-                        projectCategory: "Fintech",
-                        credit: 780000,
-                        debitToExternalVendors: 500000,
-                        debitToInternalVendors: 250000,
-                        totalDebit: 750000,
-                        profitAmount: 30000,
-                        profitPercentage: 3.85
-                    },
-                    {
-                        projectName: "Social Media Analytics Tool",
-                        projectCategory: "Marketing Technology",
-                        credit: 225000,
-                        debitToExternalVendors: 140000,
-                        debitToInternalVendors: 70000,
-                        totalDebit: 210000,
-                        profitAmount: 15000,
-                        profitPercentage: 6.67
-                    },
-                    {
-                        projectName: "Inventory Management System",
-                        projectCategory: "Retail Technology",
-                        credit: 315000,
-                        debitToExternalVendors: 195000,
-                        debitToInternalVendors: 100000,
-                        totalDebit: 295000,
-                        profitAmount: 20000,
-                        profitPercentage: 6.35
-                    },
-                    {
-                        projectName: "Video Streaming Platform",
-                        projectCategory: "Media Technology",
-                        credit: 625000,
-                        debitToExternalVendors: 395000,
-                        debitToInternalVendors: 205000,
-                        totalDebit: 600000,
-                        profitAmount: 25000,
-                        profitPercentage: 4
-                    },
-                    {
-                        projectName: "AI Chatbot Development",
-                        projectCategory: "Artificial Intelligence",
-                        credit: 270000,
-                        debitToExternalVendors: 165000,
-                        debitToInternalVendors: 90000,
-                        totalDebit: 255000,
-                        profitAmount: 15000,
-                        profitPercentage: 5.56
-                    },
-                    {
-                        projectName: "Blockchain Voting System",
-                        projectCategory: "Blockchain",
-                        credit: 550000,
-                        debitToExternalVendors: 350000,
-                        debitToInternalVendors: 180000,
-                        totalDebit: 530000,
-                        profitAmount: 20000,
-                        profitPercentage: 3.64
-                    },
-                    {
-                        projectName: "Cloud Migration Service",
-                        projectCategory: "Cloud Computing",
-                        credit: 420000,
-                        debitToExternalVendors: 270000,
-                        debitToInternalVendors: 135000,
-                        totalDebit: 405000,
-                        profitAmount: 15000,
-                        profitPercentage: 3.57
-                    },
-                    {
-                        projectName: "Cybersecurity Audit Tool",
-                        projectCategory: "Security",
-                        credit: 365000,
-                        debitToExternalVendors: 230000,
-                        debitToInternalVendors: 120000,
-                        totalDebit: 350000,
-                        profitAmount: 15000,
-                        profitPercentage: 4.11
-                    },
-                    {
-                        projectName: "Virtual Reality Training",
-                        projectCategory: "VR/AR Technology",
-                        credit: 480000,
-                        debitToExternalVendors: 310000,
-                        debitToInternalVendors: 160000,
-                        totalDebit: 470000,
-                        profitAmount: 10000,
-                        profitPercentage: 2.08
-                    },
-                    {
-                        projectName: "Smart City Dashboard",
-                        projectCategory: "Government Technology",
-                        credit: 695000,
-                        debitToExternalVendors: 450000,
-                        debitToInternalVendors: 235000,
-                        totalDebit: 685000,
-                        profitAmount: 10000,
-                        profitPercentage: 1.44
-                    },
-                    {
-                        projectName: "Telemedicine Platform",
-                        projectCategory: "Healthcare IT",
-                        credit: 405000,
-                        debitToExternalVendors: 260000,
-                        debitToInternalVendors: 135000,
-                        totalDebit: 395000,
-                        profitAmount: 10000,
-                        profitPercentage: 2.47
-                    },
-                    {
-                        projectName: "Automated Testing Framework",
-                        projectCategory: "Quality Assurance",
-                        credit: 185000,
-                        debitToExternalVendors: 115000,
-                        debitToInternalVendors: 65000,
-                        totalDebit: 180000,
-                        profitAmount: 5000,
-                        profitPercentage: 2.7
-                    }
-                ]
-            }
-        },
-        clients: {
-            data: {
-                clientItems: [
-                    {
-                        clientName: "TechCorp Industries",
-                        clientType: "Corporate",
-                        credit: 1250000,
-                        debitToExternalVendors: 750000,
-                        debitToInternalVendors: 350000,
-                        totalDebit: 1100000,
-                        profitAmount: 150000,
-                        profitPercentage: 12
-                    },
-                    {
-                        clientName: "Global Finance Solutions",
-                        clientType: "Financial Services",
-                        credit: 980000,
-                        debitToExternalVendors: 580000,
-                        debitToInternalVendors: 320000,
-                        totalDebit: 900000,
-                        profitAmount: 80000,
-                        profitPercentage: 8.16
-                    },
-                    {
-                        clientName: "HealthTech Medical Group",
-                        clientType: "Healthcare",
-                        credit: 1450000,
-                        debitToExternalVendors: 870000,
-                        debitToInternalVendors: 480000,
-                        totalDebit: 1350000,
-                        profitAmount: 100000,
-                        profitPercentage: 6.9
-                    },
-                    {
-                        clientName: "EduLearn University",
-                        clientType: "Education",
-                        credit: 675000,
-                        debitToExternalVendors: 400000,
-                        debitToInternalVendors: 225000,
-                        totalDebit: 625000,
-                        profitAmount: 50000,
-                        profitPercentage: 7.41
-                    },
-                    {
-                        clientName: "RetailMax Chain",
-                        clientType: "Retail",
-                        credit: 820000,
-                        debitToExternalVendors: 490000,
-                        debitToInternalVendors: 280000,
-                        totalDebit: 770000,
-                        profitAmount: 50000,
-                        profitPercentage: 6.1
-                    },
-                    {
-                        clientName: "Manufacturing United",
-                        clientType: "Manufacturing",
-                        credit: 1150000,
-                        debitToExternalVendors: 690000,
-                        debitToInternalVendors: 400000,
-                        totalDebit: 1090000,
-                        profitAmount: 60000,
-                        profitPercentage: 5.22
-                    },
-                    {
-                        clientName: "StartupHub Accelerator",
-                        clientType: "Startup",
-                        credit: 425000,
-                        debitToExternalVendors: 255000,
-                        debitToInternalVendors: 145000,
-                        totalDebit: 400000,
-                        profitAmount: 25000,
-                        profitPercentage: 5.88
-                    },
-                    {
-                        clientName: "Government Digital Services",
-                        clientType: "Government",
-                        credit: 1750000,
-                        debitToExternalVendors: 1050000,
-                        debitToInternalVendors: 620000,
-                        totalDebit: 1670000,
-                        profitAmount: 80000,
-                        profitPercentage: 4.57
-                    },
-                    {
-                        clientName: "Energy Solutions Corp",
-                        clientType: "Energy",
-                        credit: 965000,
-                        debitToExternalVendors: 580000,
-                        debitToInternalVendors: 340000,
-                        totalDebit: 920000,
-                        profitAmount: 45000,
-                        profitPercentage: 4.66
-                    },
-                    {
-                        clientName: "TransportLogistics Ltd",
-                        clientType: "Transportation",
-                        credit: 740000,
-                        debitToExternalVendors: 445000,
-                        debitToInternalVendors: 260000,
-                        totalDebit: 705000,
-                        profitAmount: 35000,
-                        profitPercentage: 4.73
-                    },
-                    {
-                        clientName: "MediaStream Entertainment",
-                        clientType: "Media",
-                        credit: 885000,
-                        debitToExternalVendors: 530000,
-                        debitToInternalVendors: 315000,
-                        totalDebit: 845000,
-                        profitAmount: 40000,
-                        profitPercentage: 4.52
-                    },
-                    {
-                        clientName: "RealEstate Ventures",
-                        clientType: "Real Estate",
-                        credit: 620000,
-                        debitToExternalVendors: 375000,
-                        debitToInternalVendors: 215000,
-                        totalDebit: 590000,
-                        profitAmount: 30000,
-                        profitPercentage: 4.84
-                    },
-                    {
-                        clientName: "Insurance Partners Group",
-                        clientType: "Insurance",
-                        credit: 560000,
-                        debitToExternalVendors: 340000,
-                        debitToInternalVendors: 195000,
-                        totalDebit: 535000,
-                        profitAmount: 25000,
-                        profitPercentage: 4.46
-                    },
-                    {
-                        clientName: "TravelTech Innovations",
-                        clientType: "Travel & Tourism",
-                        credit: 445000,
-                        debitToExternalVendors: 270000,
-                        debitToInternalVendors: 155000,
-                        totalDebit: 425000,
-                        profitAmount: 20000,
-                        profitPercentage: 4.49
-                    },
-                    {
-                        clientName: "AgriTech Solutions",
-                        clientType: "Agriculture",
-                        credit: 385000,
-                        debitToExternalVendors: 235000,
-                        debitToInternalVendors: 135000,
-                        totalDebit: 370000,
-                        profitAmount: 15000,
-                        profitPercentage: 3.9
-                    },
-                    {
-                        clientName: "SportsTech Analytics",
-                        clientType: "Sports & Recreation",
-                        credit: 295000,
-                        debitToExternalVendors: 180000,
-                        debitToInternalVendors: 105000,
-                        totalDebit: 285000,
-                        profitAmount: 10000,
-                        profitPercentage: 3.39
-                    },
-                    {
-                        clientName: "NonProfit Foundation",
-                        clientType: "Non-Profit",
-                        credit: 175000,
-                        debitToExternalVendors: 110000,
-                        debitToInternalVendors: 60000,
-                        totalDebit: 170000,
-                        profitAmount: 5000,
-                        profitPercentage: 2.86
-                    },
-                    {
-                        clientName: "FoodTech Delivery",
-                        clientType: "Food & Beverage",
-                        credit: 325000,
-                        debitToExternalVendors: 200000,
-                        debitToInternalVendors: 115000,
-                        totalDebit: 315000,
-                        profitAmount: 10000,
-                        profitPercentage: 3.08
-                    },
-                    {
-                        clientName: "LegalTech Services",
-                        clientType: "Legal Services",
-                        credit: 275000,
-                        debitToExternalVendors: 170000,
-                        debitToInternalVendors: 95000,
-                        totalDebit: 265000,
-                        profitAmount: 10000,
-                        profitPercentage: 3.64
-                    },
-                    {
-                        clientName: "ConsultingPro Advisory",
-                        clientType: "Consulting",
-                        credit: 195000,
-                        debitToExternalVendors: 120000,
-                        debitToInternalVendors: 70000,
-                        totalDebit: 190000,
-                        profitAmount: 5000,
-                        profitPercentage: 2.56
-                    }
-                ]
-            }
-        }
-    };
-
-    // Симуляция задержки сети
+    // Имитация задержки сервера
     setTimeout(() => {
-        const data = testData[tabType];
+        const data = DEMO_DATA[tabType];
+
         if (data) {
-            console.log(`Received test data for ${tabType}:`, data);
+            console.log(`Demo data for ${tabType}:`, data);
+            currentData[tabType] = data;
             renderTable(tabType, data);
         } else {
-            showError(tabType, `No test data found for ${tabType}`);
+            showError(tabType, `No demo data available for ${tabType}`);
         }
-    }, 500); // 500ms задержка для имитации сетевого запроса
+    }, 500); // 500ms задержка для имитации загрузки
 }
-
 
 // Show loading indicator
 function showLoading(tabType) {
@@ -899,10 +588,147 @@ function showEmptyState(tabType) {
 
 // Format numbers for display
 function formatNumber(value) {
-    // if (value === 0) return { class: 'zero-number', text: '0.00' };
-    // if (value > 0) return { class: 'positive-number', text: '+' + value.toFixed(2) };
-    // if (value < 0) return { class: 'negative-number', text: value.toFixed(2) };
     return { class: '', text: value.toString() };
+}
+
+// IMPROVED SORTING FUNCTIONS
+function parseNumericValue(value) {
+    // Handle null/undefined
+    if (value == null) return 0;
+
+    // If it's already a number, return it
+    if (typeof value === 'number') return value;
+
+    // Convert to string and clean up
+    let str = String(value).trim();
+
+    // Remove any non-numeric characters except decimal point and minus sign
+    str = str.replace(/[^\d.,-]/g, '');
+
+    // Replace comma with dot for decimal separator
+    str = str.replace(',', '.');
+
+    // Parse as float
+    const parsed = parseFloat(str);
+
+    // Return 0 if parsing failed
+    return isNaN(parsed) ? 0 : parsed;
+}
+
+function sortData(tabType, column, items) {
+    const currentSort = sortState[tabType];
+
+    // Determine sort direction with three states: asc -> desc -> none
+    if (currentSort.column === column) {
+        // Same column - cycle through states
+        if (currentSort.direction === 'asc') {
+            currentSort.direction = 'desc';
+        } else if (currentSort.direction === 'desc') {
+            // Third click - disable sorting (return to original order)
+            currentSort.direction = 'none';
+            currentSort.column = null;
+        }
+    } else {
+        // New column - default to ascending
+        currentSort.column = column;
+        currentSort.direction = 'asc';
+    }
+
+    // If sorting is disabled, return original order
+    if (currentSort.direction === 'none') {
+        return [...items]; // Return original order
+    }
+
+    // Clone items array to avoid mutating original data
+    const sortedItems = [...items];
+
+    // Define which columns are numeric for each table type
+    const numericColumns = {
+        vendors: ['credit', 'debitAsAssociated', 'debitToVendor', 'totalDebit', 'profitAmount', 'profitPercentage'],
+        projects: ['credit', 'debitToExternalVendors', 'debitToInternalVendors', 'totalDebit', 'profitAmount', 'profitPercentage'],
+        clients: ['credit', 'debitToExternalVendors', 'debitToInternalVendors', 'totalDebit', 'profitAmount', 'profitPercentage']
+    };
+
+    const isNumericColumn = numericColumns[tabType] && numericColumns[tabType].includes(column);
+
+    sortedItems.sort((a, b) => {
+        let valueA = a[column];
+        let valueB = b[column];
+
+        if (isNumericColumn) {
+            // Parse as numbers for numeric columns
+            valueA = parseNumericValue(valueA);
+            valueB = parseNumericValue(valueB);
+        } else {
+            // String comparison for text columns
+            valueA = String(valueA || '').toLowerCase().trim();
+            valueB = String(valueB || '').toLowerCase().trim();
+        }
+
+        let comparison = 0;
+        if (valueA > valueB) {
+            comparison = 1;
+        } else if (valueA < valueB) {
+            comparison = -1;
+        }
+
+        return currentSort.direction === 'desc' ? -comparison : comparison;
+    });
+
+    return sortedItems;
+}
+
+function handleColumnSort(tabType, column) {
+    if (!currentData[tabType]) return;
+
+    let items;
+    switch(tabType) {
+        case 'vendors':
+            items = currentData[tabType].data.vendorItems;
+            break;
+        case 'projects':
+            items = currentData[tabType].data.projectItems;
+            break;
+        case 'clients':
+            items = currentData[tabType].data.clientItems;
+            break;
+    }
+
+    if (!items || items.length === 0) return;
+
+    const sortedItems = sortData(tabType, column, items);
+
+    // Update current data with sorted items
+    switch(tabType) {
+        case 'vendors':
+            currentData[tabType].data.vendorItems = sortedItems;
+            break;
+        case 'projects':
+            currentData[tabType].data.projectItems = sortedItems;
+            break;
+        case 'clients':
+            currentData[tabType].data.clientItems = sortedItems;
+            break;
+    }
+
+    // Re-render table
+    renderTable(tabType, currentData[tabType]);
+}
+
+function getSortIndicator(tabType, column) {
+    const currentSort = sortState[tabType];
+    if (currentSort.column !== column) {
+        return '<i class="fa fa-sort sort-icon"></i>';
+    }
+
+    if (currentSort.direction === 'asc') {
+        return '<i class="fa fa-sort-up sort-icon active"></i>';
+    } else if (currentSort.direction === 'desc') {
+        return '<i class="fa fa-sort-down sort-icon active"></i>';
+    } else {
+        // When sorting is disabled, show default sort icon
+        return '<i class="fa fa-sort sort-icon"></i>';
+    }
 }
 
 // Main function to render table
@@ -920,7 +746,7 @@ function renderTable(tabType, data) {
     }
 }
 
-// Render table for Vendors
+// Also need to update the CSS class logic in render functions
 function renderVendorsTable(data) {
     const container = document.getElementById('table-container-vendors');
     const items = data.data.vendorItems;
@@ -930,19 +756,39 @@ function renderVendorsTable(data) {
         return;
     }
 
+    // Add sorted class to table if currently sorted (but not when sorting is disabled)
+    const sortedClass = (sortState.vendors.column && sortState.vendors.direction !== 'none') ?
+        `sorted-by-column-${getColumnIndex('vendors', sortState.vendors.column)}` : '';
+
     let tableHTML = `
-            <div class="analytics-table">
+            <div class="analytics-table ${sortedClass}">
                 <table>
                     <thead>
                         <tr>
-                            <th>Vendor Name</th>
-                            <th>Type</th>
-                            <th>Credit</th>
-                            <th>Debit as Associated</th>
-                            <th>Debit to Vendor</th>
-                            <th>Total Debit</th>
-                            <th>Profit Amount</th>
-                            <th>Profit %</th>
+                            <th class="sortable ${(sortState.vendors.column === 'vendorName' && sortState.vendors.direction !== 'none') ? 'sorted' : ''}" onclick="handleColumnSort('vendors', 'vendorName')">
+                                Vendor Name ${getSortIndicator('vendors', 'vendorName')}
+                            </th>
+                            <th class="sortable ${(sortState.vendors.column === 'vendorType' && sortState.vendors.direction !== 'none') ? 'sorted' : ''}" onclick="handleColumnSort('vendors', 'vendorType')">
+                                Type ${getSortIndicator('vendors', 'vendorType')}
+                            </th>
+                            <th class="sortable ${(sortState.vendors.column === 'credit' && sortState.vendors.direction !== 'none') ? 'sorted' : ''}" onclick="handleColumnSort('vendors', 'credit')">
+                                Credit ${getSortIndicator('vendors', 'credit')}
+                            </th>
+                            <th class="sortable ${(sortState.vendors.column === 'debitAsAssociated' && sortState.vendors.direction !== 'none') ? 'sorted' : ''}" onclick="handleColumnSort('vendors', 'debitAsAssociated')">
+                                Debit as Associated ${getSortIndicator('vendors', 'debitAsAssociated')}
+                            </th>
+                            <th class="sortable ${(sortState.vendors.column === 'debitToVendor' && sortState.vendors.direction !== 'none') ? 'sorted' : ''}" onclick="handleColumnSort('vendors', 'debitToVendor')">
+                                Debit to Vendor ${getSortIndicator('vendors', 'debitToVendor')}
+                            </th>
+                            <th class="sortable ${(sortState.vendors.column === 'totalDebit' && sortState.vendors.direction !== 'none') ? 'sorted' : ''}" onclick="handleColumnSort('vendors', 'totalDebit')">
+                                Total Debit ${getSortIndicator('vendors', 'totalDebit')}
+                            </th>
+                            <th class="sortable ${(sortState.vendors.column === 'profitAmount' && sortState.vendors.direction !== 'none') ? 'sorted' : ''}" onclick="handleColumnSort('vendors', 'profitAmount')">
+                                Profit Amount ${getSortIndicator('vendors', 'profitAmount')}
+                            </th>
+                            <th class="sortable ${(sortState.vendors.column === 'profitPercentage' && sortState.vendors.direction !== 'none') ? 'sorted' : ''}" onclick="handleColumnSort('vendors', 'profitPercentage')">
+                                Profit % ${getSortIndicator('vendors', 'profitPercentage')}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -958,8 +804,8 @@ function renderVendorsTable(data) {
 
         tableHTML += `
                 <tr>
-                    <td>${item.vendorName}</td>
-                    <td>${item.vendorType}</td>
+                    <td>${item.vendorName || ''}</td>
+                    <td>${item.vendorType || ''}</td>
                     <td class="number-cell ${credit.class}">${credit.text}</td>
                     <td class="number-cell ${debitAsAssociated.class}">${debitAsAssociated.text}</td>
                     <td class="number-cell ${debitToVendor.class}">${debitToVendor.text}</td>
@@ -989,19 +835,37 @@ function renderProjectsTable(data) {
         return;
     }
 
+    const sortedClass = sortState.projects.column ? `sorted-by-column-${getColumnIndex('projects', sortState.projects.column)}` : '';
+
     let tableHTML = `
-            <div class="analytics-table">
+            <div class="analytics-table ${sortedClass}">
                 <table>
                     <thead>
                         <tr>
-                            <th>Project Name</th>
-                            <th>Category</th>
-                            <th>Credit</th>
-                            <th>Debit to External</th>
-                            <th>Debit to Internal</th>
-                            <th>Total Debit</th>
-                            <th>Profit Amount</th>
-                            <th>Profit %</th>
+                            <th class="sortable ${sortState.projects.column === 'projectName' ? 'sorted' : ''}" onclick="handleColumnSort('projects', 'projectName')">
+                                Project Name ${getSortIndicator('projects', 'projectName')}
+                            </th>
+                            <th class="sortable ${sortState.projects.column === 'projectCategory' ? 'sorted' : ''}" onclick="handleColumnSort('projects', 'projectCategory')">
+                                Category ${getSortIndicator('projects', 'projectCategory')}
+                            </th>
+                            <th class="sortable ${sortState.projects.column === 'credit' ? 'sorted' : ''}" onclick="handleColumnSort('projects', 'credit')">
+                                Credit ${getSortIndicator('projects', 'credit')}
+                            </th>
+                            <th class="sortable ${sortState.projects.column === 'debitToExternalVendors' ? 'sorted' : ''}" onclick="handleColumnSort('projects', 'debitToExternalVendors')">
+                                Debit to External ${getSortIndicator('projects', 'debitToExternalVendors')}
+                            </th>
+                            <th class="sortable ${sortState.projects.column === 'debitToInternalVendors' ? 'sorted' : ''}" onclick="handleColumnSort('projects', 'debitToInternalVendors')">
+                                Debit to Internal ${getSortIndicator('projects', 'debitToInternalVendors')}
+                            </th>
+                            <th class="sortable ${sortState.projects.column === 'totalDebit' ? 'sorted' : ''}" onclick="handleColumnSort('projects', 'totalDebit')">
+                                Total Debit ${getSortIndicator('projects', 'totalDebit')}
+                            </th>
+                            <th class="sortable ${sortState.projects.column === 'profitAmount' ? 'sorted' : ''}" onclick="handleColumnSort('projects', 'profitAmount')">
+                                Profit Amount ${getSortIndicator('projects', 'profitAmount')}
+                            </th>
+                            <th class="sortable ${sortState.projects.column === 'profitPercentage' ? 'sorted' : ''}" onclick="handleColumnSort('projects', 'profitPercentage')">
+                                Profit % ${getSortIndicator('projects', 'profitPercentage')}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1017,8 +881,8 @@ function renderProjectsTable(data) {
 
         tableHTML += `
                 <tr>
-                    <td>${item.projectName}</td>
-                    <td>${item.projectCategory}</td>
+                    <td>${item.projectName || ''}</td>
+                    <td>${item.projectCategory || ''}</td>
                     <td class="number-cell ${credit.class}">${credit.text}</td>
                     <td class="number-cell ${debitToExternal.class}">${debitToExternal.text}</td>
                     <td class="number-cell ${debitToInternal.class}">${debitToInternal.text}</td>
@@ -1048,19 +912,37 @@ function renderClientsTable(data) {
         return;
     }
 
+    const sortedClass = sortState.clients.column ? `sorted-by-column-${getColumnIndex('clients', sortState.clients.column)}` : '';
+
     let tableHTML = `
-            <div class="analytics-table">
+            <div class="analytics-table ${sortedClass}">
                 <table>
                     <thead>
                         <tr>
-                            <th>Client Name</th>
-                            <th>Type</th>
-                            <th>Credit</th>
-                            <th>Debit to External</th>
-                            <th>Debit to Internal</th>
-                            <th>Total Debit</th>
-                            <th>Profit Amount</th>
-                            <th>Profit %</th>
+                            <th class="sortable ${sortState.clients.column === 'clientName' ? 'sorted' : ''}" onclick="handleColumnSort('clients', 'clientName')">
+                                Client Name ${getSortIndicator('clients', 'clientName')}
+                            </th>
+                            <th class="sortable ${sortState.clients.column === 'clientType' ? 'sorted' : ''}" onclick="handleColumnSort('clients', 'clientType')">
+                                Type ${getSortIndicator('clients', 'clientType')}
+                            </th>
+                            <th class="sortable ${sortState.clients.column === 'credit' ? 'sorted' : ''}" onclick="handleColumnSort('clients', 'credit')">
+                                Credit ${getSortIndicator('clients', 'credit')}
+                            </th>
+                            <th class="sortable ${sortState.clients.column === 'debitToExternalVendors' ? 'sorted' : ''}" onclick="handleColumnSort('clients', 'debitToExternalVendors')">
+                                Debit to External ${getSortIndicator('clients', 'debitToExternalVendors')}
+                            </th>
+                            <th class="sortable ${sortState.clients.column === 'debitToInternalVendors' ? 'sorted' : ''}" onclick="handleColumnSort('clients', 'debitToInternalVendors')">
+                                Debit to Internal ${getSortIndicator('clients', 'debitToInternalVendors')}
+                            </th>
+                            <th class="sortable ${sortState.clients.column === 'totalDebit' ? 'sorted' : ''}" onclick="handleColumnSort('clients', 'totalDebit')">
+                                Total Debit ${getSortIndicator('clients', 'totalDebit')}
+                            </th>
+                            <th class="sortable ${sortState.clients.column === 'profitAmount' ? 'sorted' : ''}" onclick="handleColumnSort('clients', 'profitAmount')">
+                                Profit Amount ${getSortIndicator('clients', 'profitAmount')}
+                            </th>
+                            <th class="sortable ${sortState.clients.column === 'profitPercentage' ? 'sorted' : ''}" onclick="handleColumnSort('clients', 'profitPercentage')">
+                                Profit % ${getSortIndicator('clients', 'profitPercentage')}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1076,8 +958,8 @@ function renderClientsTable(data) {
 
         tableHTML += `
                 <tr>
-                    <td>${item.clientName}</td>
-                    <td>${item.clientType}</td>
+                    <td>${item.clientName || ''}</td>
+                    <td>${item.clientType || ''}</td>
                     <td class="number-cell ${credit.class}">${credit.text}</td>
                     <td class="number-cell ${debitToExternal.class}">${debitToExternal.text}</td>
                     <td class="number-cell ${debitToInternal.class}">${debitToInternal.text}</td>
@@ -1095,4 +977,42 @@ function renderClientsTable(data) {
         `;
 
     container.innerHTML = tableHTML;
+}
+
+// Helper function to get column index for CSS styling
+function getColumnIndex(tabType, column) {
+    const columnMaps = {
+        vendors: {
+            'vendorName': 0,
+            'vendorType': 1,
+            'credit': 2,
+            'debitAsAssociated': 3,
+            'debitToVendor': 4,
+            'totalDebit': 5,
+            'profitAmount': 6,
+            'profitPercentage': 7
+        },
+        projects: {
+            'projectName': 0,
+            'projectCategory': 1,
+            'credit': 2,
+            'debitToExternalVendors': 3,
+            'debitToInternalVendors': 4,
+            'totalDebit': 5,
+            'profitAmount': 6,
+            'profitPercentage': 7
+        },
+        clients: {
+            'clientName': 0,
+            'clientType': 1,
+            'credit': 2,
+            'debitToExternalVendors': 3,
+            'debitToInternalVendors': 4,
+            'totalDebit': 5,
+            'profitAmount': 6,
+            'profitPercentage': 7
+        }
+    };
+
+    return columnMaps[tabType] && columnMaps[tabType][column] !== undefined ? columnMaps[tabType][column] : -1;
 }

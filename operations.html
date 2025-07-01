@@ -10,7 +10,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="css/transactions.css">
+    <link rel="stylesheet" href="css/operations.css">
 </head>
 <body>
 
@@ -18,8 +18,8 @@
 <div class="sidebar">
     <h4 class="mb-4"><i class="fa fa-cube"></i> Fiscal Corp</h4>
     <nav class="nav flex-column">
-<!--        <a href="/overview" class="nav-link"><i class="fa fa-home"></i>  Overview</a>-->
-        <a href="index" class="nav-link"><i class="fa fa-wallet"></i>  Overview</a>
+        <!--        <a href="/overview" class="nav-link"><i class="fa fa-home"></i>  Overview</a>-->
+        <a href="overview" class="nav-link"><i class="fa fa-wallet"></i>  Overview</a>
         <a href="analytics" class="nav-link"><i class="fa fa-chart-bar"></i>  Analytics</a>
         <a href="operations" class="nav-link active"><i class="fa fa-credit-card"></i>  Operations</a>
     </nav>
@@ -27,23 +27,23 @@
 
 <!-- Основной контент -->
 <div class="content">
-    <h1 class="text-center mb-4" style="font-weight: bold;">Add Transaction</h1>
+    <h1 class="text-center mb-4" style="font-weight: bold;">Add Operations</h1>
 
     <div class="transaction-container">
         <div class="transaction-card">
             <!-- Вкладки -->
             <ul class="nav nav-tabs" id="transactionTabs">
                 <li class="nav-item">
-                    <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#block1">Debit Business Transaction</a>
+                    <a class="nav-link active" id="tab1" data-bs-toggle="tab" href="#block1">Debit Business Operation</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#block2">Transfer Transaction</a>
+                    <a class="nav-link" id="tab2" data-bs-toggle="tab" href="#block2">Transfer Operation</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="tab3" data-bs-toggle="tab" href="#block3">Exchange Transaction</a>
+                    <a class="nav-link" id="tab3" data-bs-toggle="tab" href="#block3">Exchange Operation</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="tab4" data-bs-toggle="tab" href="#block4">Credit Transaction</a>
+                    <a class="nav-link" id="tab4" data-bs-toggle="tab" href="#block4">Credit Operation</a>
                 </li>
             </ul>
 
@@ -52,10 +52,10 @@
 
                 <!--Блок №1-->
                 <div class="tab-pane fade show active transaction-card" id="block1">
-                    <h3><i class="fa fa-wallet"></i> Debit Business Transaction</h3>
+                    <h3><i class="fa fa-wallet"></i> Debit Business Operation</h3>
                     <form id="business-debit-form">
                         <div class="mb-3">
-                            <label for="transactionDate-business-debit" class="form-label">Transaction Date:</label>
+                            <label for="transactionDate-business-debit" class="form-label">Operation Date:</label>
                             <input type="date" id="transactionDate-business-debit" name="transactionDate-business-debit" class="form-control" required>
                         </div>
                         <div class="mb-3">
@@ -109,10 +109,10 @@
 
                 <!--Блок №2-->
                 <div class="tab-pane fade transaction-card" id="block2">
-                    <h3><i class="fa fa-wallet"></i> Transfer Transaction</h3>
+                    <h3><i class="fa fa-wallet"></i> Transfer Operation</h3>
                     <form id="transfer-form">
 
-                        <label for="transactionDate-transfer">Transaction Date:</label>
+                        <label for="transactionDate-transfer">Operation Date:</label>
                         <input type="date" id="transactionDate-transfer" name="transactionDate-transfer" required>
 
                         <div class="mb-3">
@@ -142,9 +142,9 @@
 
 
                 <div class="tab-pane fade transaction-card" id="block3">
-                    <h3><i class="fa fa-exchange-alt"></i> Exchange Transaction</h3>
+                    <h3><i class="fa fa-exchange-alt"></i> Exchange Operation</h3>
                     <form id="exchange-form">
-                        <label for="transactionDate-exchange">Transaction Date:</label>
+                        <label for="transactionDate-exchange">Operation Date:</label>
                         <input type="date" id="transactionDate-exchange" name="transactionDate-exchange" required>
 
                         <div class="mb-3">
@@ -179,7 +179,7 @@
                 </div>
 
                 <div class="tab-pane fade transaction-cardtab-pane fade" id="block4">
-                    <h3><i class="fa fa-wallet"></i> Credit Transaction</h3>
+                    <h3><i class="fa fa-wallet"></i> Credit Operation</h3>
                     <form id="credit-form">
                         <label for="transactionDate-business-credit">Operation Date:</label>
                         <input type="date" id="transactionDate-business-credit" name="transactionDate-business-credit" required>
@@ -211,7 +211,7 @@
                             </select>
                         </div>
 
-                        <button type="submit">Submit Credit Transaction</button>
+                        <button type="submit">Submit Credit Operation</button>
                         <div id="message-credit"></div>
                     </form>
                 </div>
@@ -229,7 +229,7 @@
     const apiToken = [[${apiToken}]];
 </script>
 
-<script src="js/transactions.js"></script>
+<script src="js/operations.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

@@ -157,7 +157,7 @@ h1, h2, h3, h4, h5, h6 {
     background: linear-gradient(135deg, #6C757D 0%, #5A6268 100%);
     color: white;
     border: none;
-    padding: 12px 24px;
+    padding: 9px 24px;
     border-radius: 25px;
     cursor: pointer;
     font-weight: 500;
@@ -315,15 +315,16 @@ h1, h2, h3, h4, h5, h6 {
     background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
     color: #E4B400;
     font-weight: 600;
-    padding: 18px 16px;
+    padding: 11px 12px;
     text-align: left;
     border: none;
+    border-right: 1px solid #34495E;
     font-size: 13px;
     font-family: 'Inter', sans-serif;
     letter-spacing: 0.02em;
     text-transform: uppercase;
     position: relative;
-    border-bottom: 3px solid #E4B400;
+    border-bottom: 1px solid #E4B400;
 }
 
 .analytics-table th::after {
@@ -336,17 +337,19 @@ h1, h2, h3, h4, h5, h6 {
     background: linear-gradient(90deg, #E4B400, #D4A600);
 }
 
-.analyticss-table th:first-child {
+.analytics-table th:first-child {
     border-top-left-radius: 0;
 }
 
 .analytics-table th:last-child {
     border-top-right-radius: 0;
+    border-right: none;
 }
 
 .analytics-table td {
     padding: 16px;
     border-bottom: 1px solid #F1F3F4;
+    border-right: 1px solid #F1F3F4;
     color: #495057;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
@@ -471,73 +474,6 @@ h1, h2, h3, h4, h5, h6 {
     padding-right: 20px;
 }
 
-.currency-cell {
-    text-align: right;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 600;
-    font-size: 14px;
-    font-feature-settings: "tnum" 1;
-    letter-spacing: 0.01em;
-    padding-right: 20px;
-}
-
-.percentage-cell {
-    text-align: right;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 500;
-    font-size: 13px;
-    font-feature-settings: "tnum" 1;
-    padding-right: 20px;
-}
-
-/* Color scheme for numbers */
-.positive-number {
-    /*background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(5, 150, 105, 0.02) 100%);*/
-    /*padding: 4px 8px;*/
-    /*border-radius: 6px;*/
-    /*font-weight: 600;*/
-}
-
-.negative-number {
-    /*!*color: #DC2626;*!*/
-    /*background: linear-gradient(135deg, rgba(220, 38, 38, 0.08) 0%, rgba(220, 38, 38, 0.02) 100%);*/
-    /*padding: 4px 8px;*/
-    /*border-radius: 6px;*/
-    /*!*border-left: 3px solid #DC2626;*!*/
-    /*font-weight: 600;*/
-}
-
-.zero-number {
-    color: #6B7280;
-    background: rgba(107, 114, 128, 0.04);
-    padding: 4px 8px;
-    border-radius: 6px;
-    border-left: 3px solid #9CA3AF;
-    font-weight: 500;
-}
-
-.neutral-number {
-    color: #374151;
-    font-weight: 500;
-}
-
-/* Styles for important values */
-.highlight-cell {
-    background: linear-gradient(135deg, rgba(228, 180, 0, 0.08) 0%, rgba(228, 180, 0, 0.02) 100%);
-    font-weight: 600;
-    color: #B45309;
-    border-left: 3px solid #E4B400;
-    position: relative;
-}
-
-.highlight-cell::before {
-    content: '★';
-    position: absolute;
-    left: -12px;
-    color: #E4B400;
-    font-size: 12px;
-}
-
 /* Responsive styles */
 @media (max-width: 768px) {
     .analytics-table {
@@ -575,36 +511,62 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* Styles for sorting */
-.sortable-header {
+
+/* SORTING STYLES - Add these to your existing analytics.css */
+
+/* Sortable column headers */
+.analytics-table th.sortable {
     cursor: pointer;
-    position: relative;
     user-select: none;
+    position: relative;
     transition: all 0.2s ease;
 }
 
-.sortable-header:hover {
-    background: rgba(228, 180, 0, 0.1);
-    color: #FFF;
+.analytics-table th.sortable:hover {
+    background: linear-gradient(135deg, #34495E 0%, #2C3E50 100%);
+    color: #F1C40F;
 }
 
-.sortable-header::after {
-    content: '↕';
-    position: absolute;
-    right: 8px;
-    opacity: 0.5;
+/* Sort icons */
+.sort-icon {
+    margin-left: 8px;
+    opacity: 0.6;
     font-size: 12px;
     transition: all 0.2s ease;
 }
 
-.sortable-header.asc::after {
-    content: '↑';
+.analytics-table th.sortable:hover .sort-icon {
     opacity: 1;
-    color: #E4B400;
 }
 
-.sortable-header.desc::after {
-    content: '↓';
+.sort-icon.active {
     opacity: 1;
-    color: #E4B400;
+    color: #314559;
+    font-weight: bold;
+}
+
+/* Add a subtle highlight for the sorted column */
+.analytics-table th.sortable.sorted {
+    background: linear-gradient(135deg, #E4B400 0%, #D4A600 100%);
+    color: #2C3E50;
+}
+
+/* Optional: Add column highlighting for sorted column */
+.analytics-table.sorted-by-column-0 td:nth-child(1),
+.analytics-table.sorted-by-column-1 td:nth-child(2),
+.analytics-table.sorted-by-column-2 td:nth-child(3),
+.analytics-table.sorted-by-column-3 td:nth-child(4),
+.analytics-table.sorted-by-column-4 td:nth-child(5),
+.analytics-table.sorted-by-column-5 td:nth-child(6),
+.analytics-table.sorted-by-column-6 td:nth-child(7),
+.analytics-table.sorted-by-column-7 td:nth-child(8) {
+    background-color: rgba(228, 180, 0, 0.05);
+}
+
+/* Responsive improvements for sorting icons */
+@media (max-width: 768px) {
+    .sort-icon {
+        font-size: 10px;
+        margin-left: 4px;
+    }
 }
