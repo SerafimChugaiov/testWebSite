@@ -17,8 +17,533 @@
     <!-- Подключаем FontAwesome для иконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <!-- Подключаем внешний CSS -->
-    <link rel="stylesheet" href="css/overview.css">
+    <style>
+        /* Общие стили */
+        body {
+            display: flex;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F8F9FA;
+            color: #2C3E50;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            color: #2C3E50;
+            letter-spacing: -0.02em;
+        }
+
+        /* Боковая панель */
+        .sidebar {
+            width: 240px;
+            background: #2C3E50;
+            height: 100vh;
+            position: fixed;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar h4 {
+            color: #E4B400;
+            font-size: 1.2rem;
+        }
+
+        .sidebar .nav-link {
+            color: #ECF0F1;
+            font-weight: 500;
+            margin: 12px 0;
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .sidebar .nav-link:hover {
+            background: #E4B400;
+            color: #2C3E50;
+        }
+
+        .sidebar .nav-link.active {
+            background: #E4B400;
+            color: #2C3E50;
+            font-weight: bold;
+        }
+
+        /* Основной контент */
+        .content {
+            margin-left: 260px;
+            padding: 32px;
+            flex-grow: 1;
+            background-color: #F8F9FA;
+        }
+
+        /* Заголовок */
+        .overview-header {
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .overview-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #2C3E50;
+            margin: 0;
+            letter-spacing: -0.03em;
+        }
+
+        .currency-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .currency-selector label {
+            font-weight: 500;
+            color: #5D6D7E;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .currency-selector select {
+            border: 1px solid #D5DBDB;
+            border-radius: 8px;
+            padding: 8px 12px;
+            background: #FFFFFF;
+            color: #2C3E50;
+            font-weight: 500;
+            min-width: 100px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .currency-selector select:focus {
+            outline: none;
+            border-color: #E4B400;
+            box-shadow: 0 0 0 3px rgba(228, 180, 0, 0.1);
+        }
+
+        /* Секция баланса */
+        .balance-section {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .balance-card {
+            flex: 2.5;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+            border-radius: 16px;
+            padding: 45px;
+            box-shadow: 0 8px 32px rgba(44, 62, 80, 0.08);
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid #E4B400;
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .exchange-card {
+            flex: 1;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(44, 62, 80, 0.08);
+            border: 2px solid #E8EAED;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .exchange-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2C3E50;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-title i {
+            color: #E4B400;
+            font-size: 1.2rem;
+            padding: 8px;
+            background: rgba(228, 180, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Переработанный дизайн баланса */
+        .balance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+        }
+
+        .balance-item {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+            border: 2px solid #E8EAED;
+            border-radius: 14px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balance-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #E4B400 0%, #F39C12 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .balance-item:hover {
+            border-color: #E4B400;
+            box-shadow: 0 12px 40px rgba(228, 180, 0, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .balance-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .balance-currency {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #5D6D7E;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+            background: rgba(228, 180, 0, 0.1);
+            padding: 6px 12px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .balance-amount {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #2C3E50;
+            font-family: 'Segoe UI', monospace;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Курсы валют - светлый дизайн */
+        .exchange-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .exchange-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: #FFFFFF;
+            border-radius: 10px;
+            border: 1px solid #E8EAED;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .exchange-item:hover {
+            background: #F8F9FA;
+            border-color: #D5DBDB;
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .exchange-pair {
+            font-weight: 700;
+            color: #2C3E50;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .exchange-rate {
+            font-weight: 700;
+            color: #5D6D7E;
+            font-size: 1.1rem;
+            font-family: 'Segoe UI', monospace;
+        }
+
+        /* Секция аналитики */
+        .analytics-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .analytics-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid #E8EAED;
+        }
+
+        .analytics-card .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .analytics-card .card-title i {
+            color: #5D6D7E;
+            font-size: 1rem;
+            padding: 0;
+            background: none;
+            border-radius: 0;
+        }
+
+        /* Таблица кошельков */
+        .wallet-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .wallet-table th {
+            background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+            color: #FFFFFF;
+            font-weight: 700;
+            padding: 18px 20px;
+            text-align: left;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .wallet-table th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        .wallet-table th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        .wallet-table th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #E4B400;
+        }
+
+        .wallet-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(228, 180, 0, 0.1);
+            background: #FFFFFF;
+            transition: all 0.3s ease;
+        }
+
+        .wallet-table tbody tr:hover td {
+            background: rgba(228, 180, 0, 0.05);
+            transform: translateX(2px);
+        }
+
+        .wallet-table tbody tr:last-child td:first-child {
+            border-radius: 0 0 0 12px;
+        }
+
+        .wallet-table tbody tr:last-child td:last-child {
+            border-radius: 0 0 12px 0;
+        }
+
+        .wallet-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .wallet-name {
+            font-weight: 700;
+            color: #2C3E50;
+            font-size: 1.05rem;
+        }
+
+        .wallet-currency {
+            color: #7F8C8D;
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: rgba(228, 180, 0, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .wallet-balance,
+        .wallet-default-balance {
+            font-weight: 700;
+            color: #2C3E50;
+            font-size: 1.05rem;
+            font-family: 'Segoe UI', monospace;
+        }
+
+        /* Состояния загрузки и ошибок */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #5D6D7E;
+            font-size: 0.9rem;
+        }
+
+        .loading i {
+            color: #E4B400;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .error {
+            text-align: center;
+            padding: 24px;
+            color: #E74C3C;
+            background: #FDEDEC;
+            border-radius: 8px;
+            border: 1px solid #F1C0C0;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .error i {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #5D6D7E;
+            font-size: 0.9rem;
+            background: #FAFBFC;
+            border-radius: 8px;
+            border: 1px solid #E8EAED;
+        }
+
+        .no-data i {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            display: block;
+            color: #BDC3C7;
+        }
+
+        /* Специальные стили для загрузки в главных блоках */
+        .balance-card .loading {
+            color: #5D6D7E;
+        }
+
+        .exchange-card .loading {
+            color: #5D6D7E;
+        }
+
+        .exchange-card .loading i {
+            color: #5D6D7E;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .balance-section {
+                flex-direction: column;
+            }
+
+            .balance-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .overview-header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .overview-title {
+                font-size: 1.75rem;
+            }
+
+            .wallet-table {
+                font-size: 0.8rem;
+            }
+
+            .wallet-table th,
+            .wallet-table td {
+                padding: 12px 16px;
+            }
+
+            .balance-amount {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .balance-item {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .exchange-item {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .analytics-card {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .balance-card,
+        .exchange-card {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
 </head>
 <body>
 
@@ -26,118 +551,100 @@
 <div class="sidebar">
     <h4 class="mb-4"><i class="fa fa-cube"></i> Fiscal Corp</h4>
     <nav class="nav flex-column">
-        <a href="index" class="nav-link active"><i class="fa fa-wallet"></i> Overview</a>
-        <a href="analytics" class="nav-link"><i class="fa fa-chart-bar"></i> Analytics</a>
-        <a href="operations" class="nav-link"><i class="fa fa-credit-card"></i> Operations</a>
+        <a href="/overview" class="nav-link active"><i class="fa fa-wallet"></i> Overview</a>
+        <a href="/analytics" class="nav-link"><i class="fa fa-chart-bar"></i> Analytics</a>
+        <a href="/operations" class="nav-link"><i class="fa fa-credit-card"></i> Operations</a>
     </nav>
 </div>
 
 <!-- Основной контент -->
 <div class="content">
-    <h1 class="text-center mb-4" style="font-weight: bold;">Overview</h1>
-
-
-    <!-- Блок общей суммы -->
-    <div class="total-balance-block mb-5">
-        <h5>Total Balance</h5>
-        <h2>---</h2>
-    </div>
-
-    <!-- Блоки в стиле банковских карт -->
-    <div class="cards-container">
-        <div class="card-block usd-card">
-            <div class="card-top">
-                <span class="currency-name">USD Wallets</span>
-                <span class="card-logo">💳</span>
-            </div>
-            <div class="card-number">**** **** **** ****</div>
-            <div class="card-balance">$---</div>
-        </div>
-        <div class="card-block eur-card">
-            <div class="card-top">
-                <span class="currency-name">EUR Wallets</span>
-                <span class="card-logo">💳</span>
-            </div>
-            <div class="card-number">**** **** **** ****</div>
-            <div class="card-balance">€---</div>
-        </div>
-        <div class="card-block uah-card">
-            <div class="card-top">
-                <span class="currency-name">UAH Wallets</span>
-                <span class="card-logo">💳</span>
-            </div>
-            <div class="card-number">**** **** **** ****</div>
-            <div class="card-balance">₴---</div>
+    <!-- Блок 1: Заголовок с выбором валюты -->
+    <div class="overview-header">
+        <h1 class="overview-title">Overview</h1>
+        <div class="currency-selector">
+            <label for="defaultCurrency">Default Currency:</label>
+            <select id="defaultCurrency">
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="UAH">UAH</option>
+            </select>
         </div>
     </div>
 
-
-    <!-- Контейнер для баланса кошелька и списка кошельков -->
-    <div class="wallet-container">
-        <!-- Список кошельков -->
-        <div class="custom-block wallet-list-block">
-            <h5 style="font-weight: bold;">Wallets</h5> <!-- Сделано жирным -->
-            <div class="wallet-list">
-                <ul id="wallets-container" class="list-group"></ul>
+    <!-- Блок 2: Баланс и курсы валют -->
+    <div class="balance-section">
+        <!-- Total Balance -->
+        <div class="balance-card">
+            <h3 class="card-title">
+                <i class="fas fa-wallet"></i>
+                Total Balance
+            </h3>
+            <div id="totalBalanceContent">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Loading balance data...
+                </div>
             </div>
         </div>
 
-        <!-- Баланс кошелька -->
-        <div class="custom-block balance-block">
-            <h5 class="mb-3" id="wallet-title">Choose a Wallet</h5>
-            <h1 id="wallet-balance" style="font-size: 3.3rem;">$ 0.00</h1>
+        <!-- Exchange Rates -->
+        <div class="exchange-card">
+            <h3 class="card-title">
+                <i class="fas fa-exchange-alt"></i>
+                Exchange Rates
+            </h3>
+            <div id="exchangeRatesContent">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Loading rates...
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- График балансов и кнопка фильтрации -->
-    <div class="custom-block mt-4" style="min-height: 500px;">
-        <div class="filter-wrapper d-flex gap-2">
-            <button id="show-table-button" class="btn btn-secondary w-50">Show Table</button>
-            <button id="filter-button" class="btn btn-primary w-50">Filter by Date</button>
+    <!-- Блок 3: Аналитика кошельков -->
+    <div class="analytics-section">
+        <!-- Corporate Wallets -->
+        <div class="analytics-card">
+            <h3 class="card-title">
+                <i class="fas fa-building"></i>
+                Corporate Wallets
+            </h3>
+            <div id="corporateWalletsContent">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Loading corporate wallets...
+                </div>
+            </div>
         </div>
-        <div class="chart-wrapper">
-            <canvas id="balanceChart"></canvas>
-        </div>
-    </div>
-</div>
 
-<!-- Модальное окно для ввода даты -->
-<div id="filter-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close" id="close-modal">&times;</span>
-        <h3>Choose Period</h3>
-        <div class="modal-input-wrapper">
-            <label for="start-date">Start Date:</label>
-            <input type="date" id="start-date" required>
+        <!-- External Wallets -->
+        <div class="analytics-card">
+            <h3 class="card-title">
+                <i class="fas fa-external-link-alt"></i>
+                External Wallets
+            </h3>
+            <div id="externalWalletsContent">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Loading external wallets...
+                </div>
+            </div>
         </div>
-        <div class="modal-input-wrapper">
-            <label for="end-date">End Date:</label>
-            <input type="date" id="end-date" required>
-        </div>
-        <div class="modal-actions">
-            <button id="apply-filter" class="btn btn-success">Apply Filter</button>
-            <button id="reset-filter" class="btn btn-danger">Reset Filter</button>
-        </div>
-    </div>
-</div>
 
-<!-- Модальное окно для таблицы -->
-<div id="table-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close" id="close-table-modal">&times;</span>
-        <h3 style="text-align: center; font-weight: bold;">Balance & Dates</h3> <!-- Сделано жирным -->
-        <div>
-            <table>
-                <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Balance</th>
-                </tr>
-                </thead>
-                <tbody id="table-body">
-                <!-- Данные будут добавлены через JavaScript -->
-                </tbody>
-            </table>
+        <!-- Disabled Wallets -->
+        <div class="analytics-card">
+            <h3 class="card-title">
+                <i class="fas fa-ban"></i>
+                Disabled Wallets
+            </h3>
+            <div id="disabledWalletsContent">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Loading disabled wallets...
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -150,8 +657,252 @@
     const apiToken = [[${apiToken}]];
 </script>
 
-<!-- Подключаем локальный JS -->
-<script src="js/overview.js"></script>
+<script>
+    // Тестовые данные
+    const TEST_DATA = {
+        totalBalance: [
+            { balance: 125000.50, currency: 'EUR' },
+            { balance: 145000.75, currency: 'USD' }
+        ],
+        exchangeRates: [
+            { from: 'EUR', to: 'USD', price: 1.0950 },
+            { from: 'USD', to: 'EUR', price: 0.9132 },
+            { from: 'EUR', to: 'UAH', price: 40.5600 },
+            { from: 'USD', to: 'UAH', price: 37.0250 },
+        ],
+        corporateWallets: [
+            { name: 'Main Corporate Account', currency: 'EUR', balance: 85000.00, defaultCurrencyBalance: 85000.00 },
+            { name: 'USD Corporate Reserve', currency: 'USD', balance: 95000.00, defaultCurrencyBalance: 86766.25 },
+            { name: 'Operations Account', currency: 'EUR', balance: 25000.00, defaultCurrencyBalance: 25000.00 },
+            { name: 'Investment Fund', currency: 'USD', balance: 50000.75, defaultCurrencyBalance: 45660.69 }
+        ],
+        externalWallets: [
+            { name: 'Partner Payment Gateway', currency: 'EUR', balance: 15000.50, defaultCurrencyBalance: 15000.50 },
+            { name: 'Crypto Exchange Bridge', currency: 'USD', balance: 12500.00, defaultCurrencyBalance: 11415.00 },
+            { name: 'Client Escrow', currency: 'UAH', balance: 500000.00, defaultCurrencyBalance: 12331.61 },
+            { name: 'Merchant Account', currency: 'EUR', balance: 8750.25, defaultCurrencyBalance: 8750.25 }
+        ],
+        disabledWallets: [
+            { name: 'Legacy System Wallet', currency: 'EUR', balance: 0.00, defaultCurrencyBalance: 0.00 },
+            { name: 'Suspended Account #1', currency: 'USD', balance: 2500.00, defaultCurrencyBalance: 2283.00 },
+            { name: 'Maintenance Wallet', currency: 'UAH', balance: 150000.00, defaultCurrencyBalance: 3699.48 }
+        ]
+    };
+
+    // Utility functions
+    function formatCurrency(amount, currency) {
+        const numAmount = parseFloat(amount);
+        if (isNaN(numAmount)) {
+            return `${currency} 0.00`;
+        }
+
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: currency,
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(numAmount);
+    }
+
+    function formatNumber(value, decimals = 4) {
+        const num = parseFloat(value);
+        if (isNaN(num)) {
+            return '0.0000';
+        }
+        return num.toFixed(decimals);
+    }
+
+    function showError(containerId, message) {
+        document.getElementById(containerId).innerHTML = `
+        <div class="error">
+            <i class="fas fa-exclamation-triangle"></i>
+            Error loading data: ${message}
+        </div>
+    `;
+    }
+
+    function showNoData(containerId, message) {
+        document.getElementById(containerId).innerHTML = `
+        <div class="no-data">
+            <i class="fas fa-info-circle"></i>
+            ${message}
+        </div>
+    `;
+    }
+
+    // Simulated API call functions with delays
+    async function fetchTotalBalance() {
+        try {
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            const data = TEST_DATA.totalBalance;
+            console.log('Total Balance Data:', data);
+
+            if (!data || data.length === 0) {
+                showNoData('totalBalanceContent', 'No balance data available');
+                return;
+            }
+
+            const balanceHTML = `
+            <div class="balance-grid">
+                ${data.map(item => {
+                const balance = item.balance !== undefined ? item.balance : 0;
+                const currency = item.currency || 'EUR';
+
+                return `
+                        <div class="balance-item">
+                            <div class="balance-currency">${currency}</div>
+                            <div class="balance-amount">${formatCurrency(balance, currency)}</div>
+                        </div>
+                    `;
+            }).join('')}
+            </div>
+        `;
+
+            document.getElementById('totalBalanceContent').innerHTML = balanceHTML;
+        } catch (error) {
+            console.error('Error fetching total balance:', error);
+            showError('totalBalanceContent', error.message);
+        }
+    }
+
+    async function fetchExchangeRates() {
+        try {
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            const data = TEST_DATA.exchangeRates;
+            console.log('Exchange Rates Data:', data);
+
+            if (!data || data.length === 0) {
+                showNoData('exchangeRatesContent', 'No exchange rates available');
+                return;
+            }
+
+            const ratesHTML = `
+            <div class="exchange-list">
+                ${data.map(item => {
+                const from = item.from || 'N/A';
+                const to = item.to || 'N/A';
+                const price = item.price !== undefined ? item.price : 0;
+
+                return `
+                        <div class="exchange-item">
+                            <span class="exchange-pair">${from}/${to}</span>
+                            <span class="exchange-rate">${formatNumber(price, 4)}</span>
+                        </div>
+                    `;
+            }).join('')}
+            </div>
+        `;
+
+            document.getElementById('exchangeRatesContent').innerHTML = ratesHTML;
+        } catch (error) {
+            console.error('Error fetching exchange rates:', error);
+            showError('exchangeRatesContent', error.message);
+        }
+    }
+
+    function createWalletTable(data) {
+        if (!data || data.length === 0) {
+            return '<div class="no-data"><i class="fas fa-info-circle"></i> No wallets found</div>';
+        }
+
+        return `
+        <table class="wallet-table">
+            <thead>
+                <tr>
+                    <th>Wallet Name</th>
+                    <th>Currency</th>
+                    <th>Balance</th>
+                    <th>Default Currency Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${data.map(wallet => {
+            const name = wallet.name || 'Unknown';
+            const currency = wallet.currency || 'EUR';
+            const balance = wallet.balance !== undefined ? wallet.balance : 0;
+            const defaultBalance = wallet.defaultCurrencyBalance !== undefined ? wallet.defaultCurrencyBalance : 0;
+
+            return `
+                        <tr>
+                            <td class="wallet-name">${name}</td>
+                            <td class="wallet-currency">${currency}</td>
+                            <td class="wallet-balance">${formatCurrency(balance, currency)}</td>
+                            <td class="wallet-default-balance">${formatCurrency(defaultBalance, 'EUR')}</td>
+                        </tr>
+                    `;
+        }).join('')}
+            </tbody>
+        </table>
+    `;
+    }
+
+    async function fetchCorporateWallets() {
+        try {
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 1200));
+
+            const data = TEST_DATA.corporateWallets;
+            console.log('Corporate Wallets Data:', data);
+            document.getElementById('corporateWalletsContent').innerHTML = createWalletTable(data);
+        } catch (error) {
+            console.error('Error fetching corporate wallets:', error);
+            showError('corporateWalletsContent', error.message);
+        }
+    }
+
+    async function fetchExternalWallets() {
+        try {
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 900));
+
+            const data = TEST_DATA.externalWallets;
+            console.log('External Wallets Data:', data);
+            document.getElementById('externalWalletsContent').innerHTML = createWalletTable(data);
+        } catch (error) {
+            console.error('Error fetching external wallets:', error);
+            showError('externalWalletsContent', error.message);
+        }
+    }
+
+    async function fetchDisabledWallets() {
+        try {
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 700));
+
+            const data = TEST_DATA.disabledWallets;
+            console.log('Disabled Wallets Data:', data);
+
+            const walletArray = Array.isArray(data) ? data : [data];
+            document.getElementById('disabledWalletsContent').innerHTML = createWalletTable(walletArray);
+        } catch (error) {
+            console.error('Error fetching disabled wallets:', error);
+            showError('disabledWalletsContent', error.message);
+        }
+    }
+
+    // Initialize page
+    async function initializePage() {
+        await Promise.allSettled([
+            fetchTotalBalance(),
+            fetchExchangeRates(),
+            fetchCorporateWallets(),
+            fetchExternalWallets(),
+            fetchDisabledWallets()
+        ]);
+    }
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', initializePage);
+
+    document.getElementById('defaultCurrency').addEventListener('change', function(e) {
+        console.log('Default currency changed to:', e.target.value);
+        // Здесь можно добавить логику для пересчета балансов в выбранной валюте
+    });
+</script>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
